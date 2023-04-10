@@ -5,7 +5,16 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      yugabytedb:
+        image: ghcr.io/yogendra/yb-gh-action-service
+        ports:
+          - 7000:7000
+          - 9000:9000
+          - 5433:5433
+          - 9042:9042
+        option:
+          --start-period 10s
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -14,7 +23,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build with Maven
-        run: ./mvnw --batch-mode --update-snapshots package
+        run: ./mvnw --batch-mode --update-snapshots
       - run: mkdir staging && cp target/*.jar staging
       - uses: actions/upload-artifact@v3
         with:
