@@ -9,11 +9,11 @@ jobs:
       yugabytedb:
         image: ghcr.io/yogendra/yb-gh-action-service
         ports:
-          - 7000:7000
-          - 9000:9000
-          - 5433:5433
-          - 9042:9042
-        option:
+        - 7000:7000
+        - 9000:9000
+        - 5433:5433
+        - 9042:9042
+        options: >-
           --start-period 10s
     steps:
       - uses: actions/checkout@v3
