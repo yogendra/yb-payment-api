@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:yugabytedb://localhost:5433/yugabyte
+    platform: yugabyte
+    username: yugabyte
+    password: ''
+    driver-class-name: com.yugabyte.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:keystore/keystore.p12
+    key-store-password: changeit
+    protocol: tls
+    enabled-protocols:
+      - TLSv1.2

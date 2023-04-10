@@ -1,0 +1,20 @@
+{
+  "type": "array",
+  "length": {
+    "type": "number",
+    "constant": 50000
+  },
+  "content": {
+    "type": "object",
+    "id": {
+      "type": "number",
+      "id": {}
+    },
+    "name": {
+      "type": "string",
+      "faker": {
+        "generator": "name"
+      }
+    }
+  }
+}

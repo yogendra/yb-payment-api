@@ -1,0 +1,29 @@
+{
+  "type": "array",
+  "length": {
+    "type": "number",
+    "constant": 200000
+  },
+  "content": {
+    "type": "object",
+    "id": {
+      "type": "number",
+      "id": {
+        "start_at" : 10000000
+      }
+    },
+    "customer_id": {
+      "type": "same_as",
+      "ref":"customers.content.id"
+    },
+    "balance": {
+      "type": "number",
+      "subtype": "f32",
+      "constant": 1000000.00
+    },
+    "currency": {
+      "type": "string",
+      "constant": "USD"
+    }
+  }
+}
