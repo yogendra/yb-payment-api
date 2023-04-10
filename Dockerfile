@@ -7,9 +7,9 @@ ADD .mvn /app/.mvn
 ADD mvnw /app
 ADD pom.xml /app
 WORKDIR /app
-RUN ./mvnw dependency:go-offline
+RUN ./mvnw  --batch-mode --update-snapshots  dependency:go-offline
 COPY src /app/src
-RUN ./mvnw -DskipTests clean install
+RUN ./mvnw --batch-mode --update-snapshots  -DskipTests clean install
 
 
 FROM eclipse-temurin:17-jre
