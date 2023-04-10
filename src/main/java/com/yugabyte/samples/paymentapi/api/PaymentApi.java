@@ -10,7 +10,7 @@ import com.yugabyte.samples.paymentapi.service.TransactionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/payments")
+@RestController("/api/v1/payments")
 public class PaymentApi {
 
   private TransactionService transactionService;

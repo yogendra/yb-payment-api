@@ -1,13 +1,57 @@
+yb:
+  username: yugabyte
+  password: ''
+  host: 127.0.0.1
+  port: 5433
+  additional-endpoints: 127.0.0.2:5433,127.0.0.3:5433
+  topology-keys: cloud1.datacenter1.rack1
+  max-pool-size: 25
+  max-lifetime: 30000
+
+
 spring:
+  application:
+    name: payment-api
+  data:
+    rest:
+      base-path: "/data-api"
+      return-body-on-create: true
+      return-body-on-update: true
   datasource:
-    url: jdbc:yugabytedb://localhost:5433/yugabyte
-    platform: yugabyte
-    username: yugabyte
-    password: ''
-    driver-class-name: com.yugabyte.Driver
+#    url: jdbc:yugabytedb://localhost:5433/yugabyte?load-balance=true
+#    platform: yugabyte
+#    username: yugabyte
+#    password: ''
+#    driver-class-name: com.yugabyte.Driver
+#    hikari:
+#      jdbc-url: jdbc:yugabytedb://localhost:5433/yugabyte?load-balance=true
+#      username: yugabyte
+#      password: ''
+#      driver-class-name: com.yugabyte.Driver
+#      data-source-class-name: com.yugabyte.ysql.YBClusterAwareDataSource
+#      data-source-properties:
+#        serverName: 127.0.0.1
+#        portNumber: 5433
+#        databaseName: yugabyte
+#        user: yugabyte
+#        password: ''
+#        topologyKeys: "cloud1.datacenter1.rack1"
+#        additionalEndpoints: "127.0.0.1:5433,127.0.0.2:5433,127.0.0.1:5433"
+#      auto-commit: true
+#      idle-timeout: 10000
+#      minimum-idle: 5
+#      maximum-pool-size: 25
+#      max-lifetime: 30000
+#      pool-name: ybcp-1
   jpa:
     hibernate:
       ddl-auto: validate
+
+logging:
+  level:
+    com:
+      zaxxer:
+        hikari: DEBUG
 server:
   port: 8443
   ssl:
@@ -18,3 +62,34 @@ server:
     protocol: tls
     enabled-protocols:
       - TLSv1.2
+management:
+  info:
+    defaults:
+      enabled: true
+    git:
+      enabled: true
+    java:
+      enabled: true
+    build:
+      enabled: true
+    os:
+      enabled: true
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - '*'
+    enabled-by-default: true
+  endpoint:
+    info:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      show-details: ALWAYS
+      show-components: ALWAYS
+      probes:
+        enabled: true
+

@@ -2,7 +2,7 @@
   "type": "array",
   "length": {
     "type": "number",
-    "constant": 200000
+    "constant": 1000000
   },
   "content": {
     "type": "object",
@@ -19,12 +19,17 @@
       "ref": "accounts.content.id"
     },
     "credit_account": {
-      "type": "same_as",
-      "ref": "accounts.content.id"
+      "type": "number",
+      "range" : {
+        "low": 10000010,
+        "high": 10150000,
+        "step": 1
+      }
+
     },
     "amount": {
       "type": "number",
-      "constant": "10.00"
+      "constant": 10.00
     },
     "currency": {
       "type": "string",
