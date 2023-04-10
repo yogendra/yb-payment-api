@@ -19,17 +19,24 @@ public class TransactionService {
   private AccountRepository accounts;
   private TransactionRepository transactions;
 
+  public TransactionService(CustomerRepository customers, AccountRepository accounts,
+    TransactionRepository transactions) {
+    this.customers = customers;
+    this.accounts = accounts;
+    this.transactions = transactions;
+  }
+
   @Transactional
   public TransactionResponse processTransaction(TransactionRequest request) throws PaymentTransactionException {
     String correlationId = UUID.randomUUID().toString();
 
     Long customerId = request.getCustomerId();
     Long debitAccountNumber = request.getDebitAccount();
-    Account debitAccount = getCustomerAccount(customerId, debitAccountNumber, correlationId);
     Long creditAccountNumber = request.getCreditAccount();
     Account creditAccount = getAccount(creditAccountNumber, correlationId);
     Double amount = request.getAmount();
 
+    Account debitAccount = getCustomerAccount(customerId, debitAccountNumber, correlationId);
     if ( debitAccount.getBalance() - amount < 0 ){
       throw PaymentTransactionException.insufficientFund(correlationId);
     }

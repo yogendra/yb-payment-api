@@ -34,3 +34,21 @@ synth generate   src/test/synth --to csv:src/test/data
 ```
 
 
+## Payment API
+
+```bash
+curl -X POST \
+  -k \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  https://localhost:8443/api/v1/payments \
+  -d '{
+  "customerId": 1,
+  "debitAccount": 10000001,
+  "creditAccount": 10000002,
+  "amount" : 44.0,
+  "currency" : "USD"
+  }'
+
+```
+

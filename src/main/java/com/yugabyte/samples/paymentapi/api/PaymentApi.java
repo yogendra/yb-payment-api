@@ -8,9 +8,12 @@ import com.yugabyte.samples.paymentapi.service.PaymentTransactionException;
 import com.yugabyte.samples.paymentapi.service.TransactionRequest;
 import com.yugabyte.samples.paymentapi.service.TransactionService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/v1/payments")
+@RestController
+@RequestMapping("/api/v1/payments")
 public class PaymentApi {
 
   private TransactionService transactionService;
@@ -21,7 +24,7 @@ public class PaymentApi {
 
 
   @PostMapping
-  public PaymentResponse pay(PaymentRequest request) {
+  public PaymentResponse pay(@RequestBody PaymentRequest request) {
     TransactionRequest treq = TransactionRequest.builder()
       .amount(request.getAmount())
       .creditAccount(request.getCreditAccount())

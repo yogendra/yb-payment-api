@@ -15,43 +15,18 @@ spring:
   data:
     rest:
       base-path: "/data-api"
-      return-body-on-create: true
-      return-body-on-update: true
-  datasource:
-#    url: jdbc:yugabytedb://localhost:5433/yugabyte?load-balance=true
-#    platform: yugabyte
-#    username: yugabyte
-#    password: ''
-#    driver-class-name: com.yugabyte.Driver
-#    hikari:
-#      jdbc-url: jdbc:yugabytedb://localhost:5433/yugabyte?load-balance=true
-#      username: yugabyte
-#      password: ''
-#      driver-class-name: com.yugabyte.Driver
-#      data-source-class-name: com.yugabyte.ysql.YBClusterAwareDataSource
-#      data-source-properties:
-#        serverName: 127.0.0.1
-#        portNumber: 5433
-#        databaseName: yugabyte
-#        user: yugabyte
-#        password: ''
-#        topologyKeys: "cloud1.datacenter1.rack1"
-#        additionalEndpoints: "127.0.0.1:5433,127.0.0.2:5433,127.0.0.1:5433"
-#      auto-commit: true
-#      idle-timeout: 10000
-#      minimum-idle: 5
-#      maximum-pool-size: 25
-#      max-lifetime: 30000
-#      pool-name: ybcp-1
+#      return-body-on-create: true
+#      return-body-on-update: true
   jpa:
     hibernate:
       ddl-auto: validate
+    show-sql: true
 
 logging:
   level:
     com:
       zaxxer:
-        hikari: DEBUG
+        hikari: INFO
 server:
   port: 8443
   ssl:
