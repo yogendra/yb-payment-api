@@ -7,6 +7,27 @@
 ./mvnw clean install
 ```
 
+## Run
+
+1. Local Java
+
+    ```bash
+    java -jar target/payment-api-0.0.1-SNAPSHOT.jar
+    ```
+
+1. Docker
+
+    ```bash
+   docker run --name payment-api -p 8443:8443 ghcr.io/yogendra/yb-payment-api:latest
+    ```
+## Customize application
+
+This is a spring boot application, so you can change the behavior by setting environment variables, JVM Parameteres (`-D`) or arguments. Following is list of settings to change application behaviour.
+
+| Spring config | Env variable | JVM Arg | Parameter | Description | Example |
+|- |- |- |- |- |
+| | | | | |
+
 ## Run JMeter
 
 ```bash
