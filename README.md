@@ -15,7 +15,7 @@
     java -jar target/payment-api-0.0.1-SNAPSHOT.jar
     ```
 
-1. Docker
+2. Docker
 
     ```bash
    docker run --name payment-api -p 8443:8443 ghcr.io/yogendra/yb-payment-api:latest
@@ -24,9 +24,44 @@
 
 This is a spring boot application, so you can change the behavior by setting environment variables, JVM Parameteres (`-D`) or arguments. Following is list of settings to change application behaviour.
 
-| Spring config | Env variable | JVM Arg | Parameter | Description | Example |
-|- |- |- |- |- |
-| | | | | |
+| Spring Config  / JVM Arg  / App Arg | Env variable            | Description                                      | Example / Default                                       |
+|-------------------------------------|-------------------------|--------------------------------------------------|---------------------------------------------------------|
+| yb.username                         | YB_USERNAME             | DB Username                                      | --yb.ysername=yugabyte                                  |
+ | yb.password                         | YB_PASSWORD             | DB Password                                      | --yb.password=''                                        |
+| yb.host                             | YB_HOST                 | DB Host                                          | --yb.host=127.0.0.1                                     |
+| yb.port                             | YB_PORT                 | DB Port                                          | --yb.port=5433                                          |
+| yb.additional-endpoints             | YB_ADDITIONAL_ENDPOINTS | DB Additinal tserver addresses (comma-separated) | --yb.additional-endpoints=127.0.0.2:5433,127.0.0.3:5433 |
+| yb.topology-keys                    | YB_TOPOLOGY_KEYS        | DB Topology keys for local region/zone/rack      | --yb.topology-keys=cloud1.datacenter1.rack1             |
+| yb.max-pool-size                    | YB_MAX_POOL_SIZE        | DB Connection pool maximum size                  | --yb.max-pool-size=25                                   |
+| yb.max-lifetime                     | YB_MAX_LIFETIME         | DB Connection maximum lifetimes                  | --yb.max-lifetime=30000                                 |
+| spring.jpa.show-sql                 | SPRING_JPA_SHOW_SQL     | Show SQL statements                              | --spring.jpa.show-sql=true                              |
+
+Other Spring boot configuration (loggin, monitoring, etc.) can also be set. Read [spring boot documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
+
+## Examples App Startup Commands
+
+1. Local Java
+
+    ```bash
+    java -jar target/payment-api-0.0.1-SNAPSHOT.jar \
+      --yb.host=127.0.0.1 \
+      --yb.port=5433 \
+      --yb.username=yugbayte \
+      --yb.password=P@ssw0rd \
+      --yb.additional-endpoints=127.0.0.2:5433,127.0.0.3:5433 \
+      --yb.topology-keys=cloud1.datacenter1.rack1
+    ```
+2. Docker
+
+    ```bash
+   docker run --rm -it --name=payment-api --hostname=payment-api ghcr.io/yogendra/yb-payment-api \
+    --yb.host=127.0.0.1 \
+    --yb.port=5433 \
+    --yb.username=yugbayte \
+    --yb.password=P@ssw0rd \
+    --yb.additional-endpoints=127.0.0.2:5433,127.0.0.3:5433 \
+    --yb.topology-keys=cloud1.datacenter1.rack1
+    ```
 
 ## Run JMeter
 
