@@ -1,0 +1,72 @@
+version: '3'
+
+volumes:
+  yb-node-1:
+  yb-node-2:
+  yb-node-3:
+
+services:
+  yb-node-1:
+    build: yb
+#    image: ghcr.io/yogendra/yugabyte
+    container_name: yb-node-1
+    hostname: yb-node-1
+    volumes:
+      - yb-node-1:/home/yugabyte/yb-data
+    command: [ "/home/yugabyte/yb-software/bin/yugabyted",
+               "start",
+               "--background=false",
+               "--insecure",
+               "--base_dir=/home/yugabyte/yb-data",
+
+    ]
+    ports:
+      - "7000:7000"
+      - "9000:7000"
+      - "5433:5433"
+      - "9042:9042"
+      - "15433:15433"
+
+  yb-node-2:
+    build: yb
+    container_name: yb-node-2
+    hostname: yb-node-2
+    volumes:
+      - yb-node-2:/home/yugabyte/yb-data
+    command: [ "/home/yugabyte/yb-software/bin/yugabyted",
+               "start",
+               "--background=false",
+               "--insecure",
+               "--base_dir=/home/yugabyte/yb-data",
+               "--join=yb-node-1"
+    ]
+    depends_on:
+      - yb-node-1
+
+
+  yb-node-3:
+    build: yb
+    container_name: yb-node-3
+    hostname: yb-node-3
+    volumes:
+      - yb-node-3:/home/yugabyte/yb-data
+    command: [ "/home/yugabyte/yb-software/bin/yugabyted",
+               "start",
+               "--background=false",
+               "--insecure",
+               "--base_dir=/home/yugabyte/yb-data",
+               "--join=yb-node-1"
+    ]
+    depends_on:
+      - yb-node-1
+
+  payment-api:
+    image: ghcr.io/ghcr.io/yogendra/yb-payment-api:latest
+    container_name: payment-api
+    hostname: payment-api
+    environment:
+      - YB_HOST=yb-node-1
+    depends_on:
+      - yb-node-1
+      - yb-node-2
+      - yb-node-3
