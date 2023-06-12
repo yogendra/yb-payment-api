@@ -1,16 +1,14 @@
 # syntax=docker/dockerfile:1
-
-ARG YB_BUILD=2.17.2.0-b216
-ARG YB_VERSION=2.17.2.0
-ARG YB_AMD64_PKG=https://downloads.yugabyte.com/releases/$YB_VERSION/yugabyte-$YB_BUILD-linux-x86_64.tar.gz
-ARG YB_ARM64_PKG=https://downloads.yugabyte.com/releases/$YB_VERSION/yugabyte-$YB_BUILD-el8-aarch64.tar.gz
+ARG YB_VERSION=2.18.0.1
+ARG YB_BUILD=b4
+ARG YB_RELEASE=$YB_VERSION-$YB_BUILD
+ARG YB_AMD64_PKG=https://downloads.yugabyte.com/releases/$YB_VERSION/yugabyte-$YB_RELEASE-linux-x86_64.tar.gz
+ARG YB_ARM64_PKG=https://downloads.yugabyte.com/releases/$YB_VERSION/yugabyte-$YB_RELEASE-el8-aarch64.tar.gz
 
 FROM ubuntu:focal
-ARG YB_VERSION
 ARG YB_AMD64_PKG
 ARG YB_ARM64_PKG
 ARG TARGETPLATFORM
-
 
 RUN <<EOT
   set -e
@@ -49,17 +47,13 @@ EOT
 USER yugabyte
 WORKDIR /home/yugabyte
 
-RUN <<EOT
-  set -e
-  if [ "$TARGETPLATFORM" = "linux/arm64" ]
-  then
-    wget -qO- $YB_ARM64_PKG | tar -xz
-  else
-    wget -qO- $YB_AMD64_PKG | tar -xz
-  fi
-  mv yugabyte-$YB_VERSION yb-software
-  cd yb-software
-  ./bin/post_install.sh
+
+RUN <<-EOT
+  set -xve
+  mkdir yb-software
+  PKG=$YB_AMD64_PKG
+  if [ "$TARGETPLATFORM" = "linux/arm64" ]; then PKG=$YB_ARM64_PKG; fi
+  wget -qO- $PKG | tar -xz --strip-component=1 -C yb-software
   echo "export PATH=$PATH:/home/yugabyte/yb-software/bin:/home/yugabyte/yb-software/postgres/bin" >> /home/yugabyte/.bashrc
   export PATH=$PATH:/home/yugabyte/yb-software/bin:/home/yugabyte/yb-software/postgres/bin
 EOT
@@ -74,11 +68,10 @@ EXPOSE 9100
 EXPOSE 5433
 EXPOSE 9042
 EXPOSE 6379
+EXPOSE 15433
 EXPOSE 54422
 EXPOSE 18018
 EXPOSE 9300
 EXPOSE 13000
 EXPOSE 12000
 EXPOSE 11000
-
-CMD [ "bin/yugabyted", "start", "--base_dir=/home/yugabyte/yb-data", "--insecure", "--advertise_address=0.0.0.0", "--background=false" ]
