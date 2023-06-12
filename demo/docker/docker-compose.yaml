@@ -1,5 +1,8 @@
 version: '3'
 
+networks:
+  demo:
+
 volumes:
   yb-node-1:
   yb-node-2:
@@ -7,10 +10,12 @@ volumes:
 
 services:
   yb-node-1:
-    build: yb
-#    image: ghcr.io/yogendra/yugabyte
+#    build: yb
+    image:  ghcr.io/yogendra/yugabyte:2.18.0.1-b4
     container_name: yb-node-1
     hostname: yb-node-1
+    networks:
+      - demo
     volumes:
       - yb-node-1:/home/yugabyte/yb-data
     command: [ "/home/yugabyte/yb-software/bin/yugabyted",
@@ -18,6 +23,8 @@ services:
                "--background=false",
                "--insecure",
                "--base_dir=/home/yugabyte/yb-data",
+               "--cloud_location=docker.local.zone1",
+               "--fault_tolerance=zone"
 
     ]
     ports:
@@ -28,9 +35,13 @@ services:
       - "15433:15433"
 
   yb-node-2:
-    build: yb
+#    build: yb
+    image:  ghcr.io/yogendra/yugabyte:2.18.0.1-b4
     container_name: yb-node-2
     hostname: yb-node-2
+    networks:
+    - demo
+
     volumes:
       - yb-node-2:/home/yugabyte/yb-data
     command: [ "/home/yugabyte/yb-software/bin/yugabyted",
@@ -38,16 +49,22 @@ services:
                "--background=false",
                "--insecure",
                "--base_dir=/home/yugabyte/yb-data",
-               "--join=yb-node-1"
+               "--join=yb-node-1",
+               "--cloud_location=docker.local.zone2",
+               "--fault_tolerance=zone"
     ]
     depends_on:
       - yb-node-1
 
 
   yb-node-3:
-    build: yb
+#    build: yb
+    image:  ghcr.io/yogendra/yugabyte:2.18.0.1-b4
     container_name: yb-node-3
     hostname: yb-node-3
+    networks:
+    - demo
+
     volumes:
       - yb-node-3:/home/yugabyte/yb-data
     command: [ "/home/yugabyte/yb-software/bin/yugabyted",
@@ -55,15 +72,21 @@ services:
                "--background=false",
                "--insecure",
                "--base_dir=/home/yugabyte/yb-data",
-               "--join=yb-node-1"
+               "--join=yb-node-1",
+               "--cloud_location=docker.local.zone3",
+               "--fault_tolerance=zone"
     ]
     depends_on:
       - yb-node-1
 
   payment-api:
-    image: ghcr.io/ghcr.io/yogendra/yb-payment-api:latest
+#    build: ../..
+    image: ghcr.io/yogendra/yb-payment-api:latest
     container_name: payment-api
     hostname: payment-api
+    networks:
+    - demo
+
     environment:
       - YB_HOST=yb-node-1
     depends_on:
