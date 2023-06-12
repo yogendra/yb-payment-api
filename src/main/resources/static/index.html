@@ -10,7 +10,7 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
   <link rel="stylesheet" href="index.css">
-  <title>Hello, world!</title>
+  <title>Payment API</title>
 </head>
 <body>
 <header>
@@ -43,11 +43,42 @@
 <!-- Begin page content -->
 <main role="main" class="container">
   <h1 class="mt-5">Welcome to Payment API</h1>
+  <form id="paymentForm">
+    <h1 class="mt-5">Payment Requests</h1>
+    <div class="form-group">
+      <label for="customerId">Customer ID</label>
+      <input type="number" class="form-control" id="customerId" name="customerId" value="1">
+    </div>
+    <div class="form-group">
+      <label for="debitAccount">Debit Account</label>
+      <input type="number" class="form-control" id="debitAccount" name="debitAccount" value="10000001">
+    </div>
+    <div class="form-group">
+      <label for="creditAccount">Credit Account</label>
+      <input type="number" class="form-control" id="creditAccount" name="creditAccount" value="10000002">
+    </div>
+    <div class="form-group">
+      <label for="currency">Currency</label>
+      <input type="text" class="form-control" id="currency" name="currency" value="USD">
+    </div>
+    <div class="form-group">
+      <label for="amount">Amount</label>
+      <input type="number" class="form-control" id="amount" name="amount" value="100">
+    </div>
+    <button id="submit" type="button" class="btn btn-primary">Pay</button>
+    <button type="reset" class="btn btn-outline-secondary">Clear</button>
+  </form>
+  <div>
+    <h2>Payment Response(s)</h2>
+    <div id="paymentResponse">
+
+    </div>
+  </div>
 </main>
 
 <footer class="footer">
   <div class="container">
-    <span class="text-muted">Place sticky footer content here.</span>
+    <span class="text-muted">Testing</span>
   </div>
 </footer>
 <!-- Optional JavaScript -->
