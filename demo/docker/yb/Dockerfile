@@ -60,7 +60,8 @@ EOT
 
 WORKDIR /home/yugabyte/yb-software
 VOLUME /home/yugabyte/yb-data
-
+HEALTHCHECK --start-period=30s --interval=30s --timeout=1s --retries=10 \
+  CMD  /home/yugabyte/yb-software/bin/ysqlsh -c "select version();"
 EXPOSE 7000
 EXPOSE 7100
 EXPOSE 9000
